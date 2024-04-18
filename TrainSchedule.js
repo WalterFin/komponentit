@@ -4,23 +4,39 @@ import { FaTrainSubway } from 'react-icons/fa6';
 import { BiCurrentLocation } from "react-icons/bi";
 import { FaLocationDot } from "react-icons/fa6";
 import searchTrains from './scheduleData'; // js for searching trains with api
+import home from './home';
+
+const updateSearch = async (from, to) => {
+  console.log(to);
+  let data = [];
+  if (from !== to) {
+    data = await searchTrains(from, to);
+  }
+  console.log(typeof data);
+  console.log(data);
+  //setScheduleData(data);
+
+};
+
+export { updateSearch };
 
 
 const TrainSchedule = () => {
-    const [departureCity, setDepartureCity] = useState('Helsinki');
-    const [destinationCity, setDestinationCity] = useState('Tampere');
-    const [scheduleData, setScheduleData] = useState([]); // Lisää tila aikatauludatalle
-
-    useEffect(() => {
-        const fetchData = async () => {
-            const data = await searchTrains("TPE", "HL"); // call searchTrains-function
-            setScheduleData(data);
-        };
-
-        fetchData(); //Call the fetchData function when the component is loaded
-    }, []); // An empty array means that useEffect is executed only once when the component is loaded
-
+    const [departureCity, setDepartureCity] = useState('Tampere');
+    const [destinationCity, setDestinationCity] = useState('Hämeenlinna');
+    const [scheduleData, setScheduleData] = useState([]);
+    const [Search1, setSearch1] = useState("TPE");
+    const [Search2, setSearch2] = useState("HL");
     
+    useEffect(() => {
+      const fetchData = async () => {
+          const data = await searchTrains(Search1, Search2); // call searchTrains-function
+          setScheduleData(data);
+      };
+
+      fetchData();
+  }, [Search1,Search2]);
+  
     return (
       <section className={TrainCSS.trainScheduleSection}>
         <div className="container">
